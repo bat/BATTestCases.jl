@@ -13,6 +13,6 @@
 * [Documentation for development version](https://bat.github.io/BATTestCases.jl/dev)
 
 BATTestCases.jl provides a collection of test cases for
-[BAT.jl](https://github.com/bat/BAT.jl) and should be useful for tesing
+[BAT.jl](https://github.com/bat/BAT.jl) and should be useful for testing
 other bayesian Julia software (MCMC samplers, etc.) as well.
 
