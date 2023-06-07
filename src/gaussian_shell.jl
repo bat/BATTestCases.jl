@@ -4,8 +4,6 @@
 """
     struct GaussianShell <: Distribution{Multivariate,Continuous}
 
-*Experimental feature, not part of stable public API.*
-
 Gaussian Shell (see
 [Caldwell et al.](https://arxiv.org/abs/1808.08051) for definition).
 

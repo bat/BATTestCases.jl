@@ -4,8 +4,6 @@
 """
     struct FunnelDistribution <: Distribution{Multivariate,Continuous}
 
-*Experimental feature, not part of stable public API.*
-
 A funnel distribution (see
 [Caldwell et al.](https://arxiv.org/abs/1808.08051) for definition).
 
