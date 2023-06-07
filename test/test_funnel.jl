@@ -5,6 +5,16 @@ using Statistics, StatsBase, Distributions
 using HypothesisTests
 
 @testset "Funnel Distribution" begin
+    Test.@testset "FunnelDistribution ctor" begin
+        for i in 2:6
+            a = randn()
+            b = randn()
+            funnel = FunnelDistribution(a=a, b=b, n=i)
+            @test mean(funnel) == zeros(i)
+            @test StatsBase.params(funnel) == (a, b, i)
+        end
+    end
+
     #Tests different forms of instantiate Funnel Distribution
     @test @inferred(FunnelDistribution(1., 2., 3)) isa FunnelDistribution
     @test @inferred(FunnelDistribution()) isa FunnelDistribution
