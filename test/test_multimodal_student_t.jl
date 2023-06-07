@@ -3,10 +3,26 @@
 using BATTestCases
 using Test
 
-using Statistics, StatsBase, Distributions
+using LinearAlgebra, Statistics, StatsBase, Distributions
 using HypothesisTests
 
-@testset "Multimodal Tests" begin
+@testset "MultimodalStudentT" begin
+    Test.@testset "MultimodalStudentT ctor" begin
+        @test_throws ArgumentError MultimodalStudentT(n=1)
+        for i in 2:6
+            μ = randn()
+            σ = rand(0.01:0.1:2)
+            mmc = MultimodalStudentT(μ=μ,σ=σ, ν=1, n=i)
+            @test isequal(mean(mmc), fill(NaN, i))
+            @test isequal(var(mmc), fill(NaN, i))
+            @test isequal(diag(cov(mmc)), fill(NaN, i))
+            ps = StatsBase.params(mmc)
+            @test sort(ps[1]) == sort(vcat([μ, -μ], zeros(i-2)))
+            @test ps[2] == [σ for j in 1:i]
+            @test ps[3] == i
+        end
+    end
+
     cm = MixtureModel([Distributions.TDist(1), Distributions.TDist(1)])
     prod = Distributions.product_distribution([Distributions.TDist(1), Distributions.TDist(1)])
 
