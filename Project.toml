@@ -1,6 +1,6 @@
 name = "BATTestCases"
 uuid = "91d0e2c9-dbaa-453b-b50b-030d574b201f"
-version = "0.1.0"
+version = "0.2.0"
 
 [deps]
 ArgCheck = "dce04be8-c92d-5529-be00-80e4d2c0e197"
