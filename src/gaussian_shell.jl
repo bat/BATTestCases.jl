@@ -47,45 +47,11 @@ function GaussianShell(;r::Real=5, w::Real=2, n::Integer=2)
     GaussianShell(r, w, n, c, lognorm)
 end
 
-function _find_gs_search_range(ndims::Integer, r0::Real, w::Real)
-    f(r) = gs_pdf_r(r, ndims, r0, w)
-    o = AdaptiveRejectionSampling.Objective(f)
-
-    r_grid = Array(range(maximum([r0/2, r0-w]), stop=sqrt(2*ndims)*w+r0/(w^2) + sqrt(ndims)*r0/w, length=10^6))
-    y_grid = f.(r_grid)
-    y_grads = o.grad.(r_grid)
-
-    # Both sides of a concave peak
-    idx1 = argmax(y_grads)
-    idx2 = argmin(y_grads)
-
-    return (r_grid[idx1], r_grid[idx2]+sqrt(ndims)*r0)
-end
-
 nball_surf_area(r, ndims) = 2 * π^(ndims/2) / gamma(ndims/2) * r^(ndims-1)
 gs_pdf_r(r, ndims, r0, w) = nball_surf_area(r, ndims) * 1/(2π * w^2) * exp(-(abs(r) - r0)^2 / (2 * w^2))
 
 function gauss_shell_radial_samples(rng::AbstractRNG, ndims::Integer, r0::Real, w::Real, n::Integer)
-    f(r) = gs_pdf_r(r, ndims, r0, w)
-    result = Vector{Float64}()
-
-    # ToDo: AdaptiveRejectionSampling sometimes fails sporadically here,
-    # find a fix to replace this workaround:
-    ntries::Int = 0
-    while length(result) < n
-        ntries += 1
-        try
-            sampler = AdaptiveRejectionSampling.RejectionSampler(f, (10^-10, Inf), search_range=_find_gs_search_range(ndims, r0, w))
-            smpls = AdaptiveRejectionSampling.run_sampler!(rng, sampler, n)
-            append!(result, smpls)
-        catch err
-            if !(err isa AssertionError || err isa DomainError) || ntries > 4
-                rethrow()
-            end
-        end
-    end
-
-    result
+    throw(ErrorException("Radial sampling for GaussianShell not implemented yet."))
 end
 
 function rand_nball_surf_samples!(rng::AbstractRNG, X::AbstractMatrix)

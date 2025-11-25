@@ -19,8 +19,6 @@ using Random123: Philox4x
 using SpecialFunctions: gamma
 using StatsBase
 
-import AdaptiveRejectionSampling
-
 
 include("rng.jl")
 include("funnel.jl")
