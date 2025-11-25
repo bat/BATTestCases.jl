@@ -12,7 +12,7 @@ DocMeta.setdocmeta!(
     BATTestCases,
     :DocTestSetup,
     :(using BATTestCases);
-    recursive=true,
+    recursive = true
 )
 
 makedocs(
@@ -29,11 +29,11 @@ makedocs(
     ],
     doctest = ("fixdoctests" in ARGS) ? :fix : true,
     linkcheck = !("nonstrict" in ARGS),
-    strict = !("nonstrict" in ARGS),
+    warnonly = ("nonstrict" in ARGS)
 )
 
 deploydocs(
     repo = "github.com/bat/BATTestCases.jl.git",
     forcepush = true,
-    push_preview = true,
+    push_preview = true
 )
