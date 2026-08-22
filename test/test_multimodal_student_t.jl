@@ -61,7 +61,7 @@ using HypothesisTests
 
     #If μ = 0, ν > 1 the Distribution should be Student t-like in every dimension
     mmc = MultimodalStudentT(μ = 0., σ = 0.1, ν = 3, n=4)
-    tdist = LocationScale(0, 0.1, TDist(3))
+    tdist = 0.1 * TDist(3)
     ks_test = HypothesisTests.ExactOneSampleKSTest(rand(mmc, 10^6)[1,:], tdist)
     @test pvalue(ks_test) > 0.01  # ToDo: Try to increase to 0.05
     ks_test = HypothesisTests.ExactOneSampleKSTest(rand(mmc, 10^6)[2,:], tdist)

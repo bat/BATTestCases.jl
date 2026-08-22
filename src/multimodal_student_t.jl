@@ -38,7 +38,7 @@ export MultimodalStudentT
 
 function MultimodalStudentT(;μ::Real=1., σ::Float64=0.2, ν::Int=1, n::Integer=4)
     @argcheck n > 1 "Minimum number of dimensions for MultimodalCauchy is 2" 
-    mixture_model = MixtureModel([LocationScale(-μ, σ, TDist(ν)), LocationScale(μ, σ, TDist(ν))])
+    mixture_model = MixtureModel([-μ + σ * TDist(ν), μ + σ * TDist(ν)])
     dist = _construct_dist(mixture_model, σ, ν, n)
     MultimodalStudentT(mixture_model, σ, n, dist)
 end
@@ -68,7 +68,7 @@ function Distributions._rand!(rng::AbstractRNG, d::MultimodalStudentT, x::Abstra
 end
 
 function _construct_dist(mixture_model::MixtureModel, σ::Real, ν::Int, n::Integer)
-    vector_of_dists = vcat(mixture_model, mixture_model, [LocationScale(0, σ, TDist(ν)) for i in 3:n])
+    vector_of_dists = vcat(mixture_model, mixture_model, [σ * TDist(ν) for i in 3:n])
     dist = product_distribution(vector_of_dists)
     return dist
 end
