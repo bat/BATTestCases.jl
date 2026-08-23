@@ -37,13 +37,16 @@ using HypothesisTests
     @test isapprox(@inferred(Distributions._logpdf(funnel, [0., 0., 0.])), -2.75681, atol = 1e-5)
 
     #KS Test
+    # Deterministic RNG, so the KS tests below can't fail by chance:
+    rng = BATTestCases.determ_rng()
+
     #Test the constant-variance Gaussian
     funnel = FunnelDistribution(a = 1., b = 0., n = 1)
-    ks_test = HypothesisTests.ExactOneSampleKSTest(rand(funnel, 10^6)[:], Normal(0., 1.))
-    @test pvalue(ks_test) > 0.01  # ToDo: Try to increase to 0.05
-    
+    ks_test = HypothesisTests.ExactOneSampleKSTest(rand(rng, funnel, 10^6)[:], Normal(0., 1.))
+    @test pvalue(ks_test) > 0.01
+
     #Test the variable-variance Gaussian
     funnel = FunnelDistribution(a = 0., b = 0., n = 2)
-    ks_test = HypothesisTests.ExactOneSampleKSTest(rand(funnel, 10^6)[2,:], Normal(0., 1.))
-    @test pvalue(ks_test) > 0.01  # ToDo: Try to increase to 0.05
+    ks_test = HypothesisTests.ExactOneSampleKSTest(rand(rng, funnel, 10^6)[2,:], Normal(0., 1.))
+    @test pvalue(ks_test) > 0.01
 end
