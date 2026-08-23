@@ -52,20 +52,23 @@ using HypothesisTests
     #logpdf
     @test @inferred(Distributions._logpdf(mt, [-1., 0., 1., 2.])) == -11.283438151658
 
+    # Deterministic RNG, so the KS tests below can't fail by chance:
+    rng = BATTestCases.determ_rng()
+
     #If μ = 0, d = 1 the Distribution should be Cauchy-like in every dimension
     mmc = MultimodalStudentT(μ = 0., σ = 0.1, ν = 1, n=2)
-    ks_test = HypothesisTests.ExactOneSampleKSTest(rand(mmc, 10^6)[1,:], Cauchy(0., 0.1))#First dimension
-    @test pvalue(ks_test) > 0.01  # ToDo: Try to increase to 0.05
-    ks_test = HypothesisTests.ExactOneSampleKSTest(rand(mmc, 10^6)[2,:], Cauchy(0., 0.1))#Second dimension
-    @test pvalue(ks_test) > 0.01  # ToDo: Try to increase to 0.05
+    ks_test = HypothesisTests.ExactOneSampleKSTest(rand(rng, mmc, 10^6)[1,:], Cauchy(0., 0.1))#First dimension
+    @test pvalue(ks_test) > 0.01
+    ks_test = HypothesisTests.ExactOneSampleKSTest(rand(rng, mmc, 10^6)[2,:], Cauchy(0., 0.1))#Second dimension
+    @test pvalue(ks_test) > 0.01
 
     #If μ = 0, ν > 1 the Distribution should be Student t-like in every dimension
     mmc = MultimodalStudentT(μ = 0., σ = 0.1, ν = 3, n=4)
     tdist = 0.1 * TDist(3)
-    ks_test = HypothesisTests.ExactOneSampleKSTest(rand(mmc, 10^6)[1,:], tdist)
-    @test pvalue(ks_test) > 0.01  # ToDo: Try to increase to 0.05
-    ks_test = HypothesisTests.ExactOneSampleKSTest(rand(mmc, 10^6)[2,:], tdist)
-    @test pvalue(ks_test) > 0.01  # ToDo: Try to increase to 0.05
+    ks_test = HypothesisTests.ExactOneSampleKSTest(rand(rng, mmc, 10^6)[1,:], tdist)
+    @test pvalue(ks_test) > 0.01
+    ks_test = HypothesisTests.ExactOneSampleKSTest(rand(rng, mmc, 10^6)[2,:], tdist)
+    @test pvalue(ks_test) > 0.01
 
     @test ~any(isnan, Statistics.var(mmc))
     @test ~any(isnan, Statistics.mean(mmc))
