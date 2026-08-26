@@ -10,7 +10,7 @@ module BATTestCases
 using LinearAlgebra
 using Random
 using Statistics
-using ArraysOfArrays: nestedview
+using ArraysOfArrays: VectorOfSimilarVectors
 using ArgCheck: @argcheck
 using Distributions
 using DocStringExtensions

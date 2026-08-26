@@ -81,7 +81,7 @@ function Distributions._logpdf(d::GaussianShell, x::AbstractArray)
 end
 
 function Statistics.cov(d::GaussianShell)
-    cov(nestedview(rand(BATTestCases.determ_rng(), d, 10^5)))
+    cov(VectorOfSimilarVectors(rand(BATTestCases.determ_rng(), d, 10^5)))
 end
 
 Base.length(d::GaussianShell) = length(d.c)
